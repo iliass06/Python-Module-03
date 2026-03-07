@@ -13,7 +13,7 @@ if __name__ == "__main__":
     print(f"All unique achievements: {unique}")
     print(f"Total unique achievements: {len(unique)}")
     alice_bob = bob.intersection(alice)
-    common = charlie.intersection()
+    common = charlie.intersection(alice_bob)
     print(f"All unique achievements: {common}")
     only_alice = alice.difference(bob.union(charlie))
     only_bob = bob.difference(alice.union(charlie))
