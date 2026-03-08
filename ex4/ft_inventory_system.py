@@ -4,28 +4,39 @@ def ft_parse_into_dict() -> dict:
     d = {}
     digits = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}
 
-    for i in range(1, len(sys.argv)):
-        arg = sys.argv[i]
-        name = ""
-        value_str = ""
-        found = False
-        
-        for char in arg:
-            if char == ":":
-                found = True
-            elif not found:
-                name += char
+    try:    
+        if len(sys.argv) == 1:
+            raise Exception("please enter valid arguments like this: (python3 ft_inventory_system.py sword:1 potion:5 shield:2 armor:3 helmet:1)")
+        for i in range(1, len(sys.argv)):
+            arg = sys.argv[i]
+            name = ""
+            value_str = ""
+            found = False
+
+            for char in arg:
+                if char == ":":
+                    found = True
+                elif not found:
+                    name += char
+                else:
+                    value_str += char
+            if found == False or name == "" or value_str == "":
+                raise Exception("please enter valid arguments like this: (python3 ft_inventory_system.py sword:1 potion:5 shield:2 armor:3 helmet:1)")
+
+            value = 0
+            for char in value_str:
+                digit = digits.get(char)
+                value = (value * 10) + digit
+
+            exist_val = d.get(name)
+            if exist_val is not None:
+                d.update({name: exist_val + value})
             else:
-                value_str += char
-                
-        value = 0
-        for char in value_str:
-            digit = digits.get(char)
-            value = (value * 10) + digit
-            
-        d[name] = value
-    
-    return d
+                d.update({name: value})
+        return d
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 
 def ft_total_items(d: dict) -> int:
@@ -62,23 +73,26 @@ def ft_curr_inv(dict_inv: dict):
     dict_copy.update(dict_inv)
     total = ft_total_items(dict_copy)
     for _ in range(len(dict_copy)):    
-        max_val, max_key = max_in_dict(dict_copy)    
-        pourcentage = (max_val * 100) / total
-        w_unit = "units"
-        if max_val == 1:
-            w_unit = "unit"
-        print(f"{max_key}: {max_val} {w_unit} ({pourcentage:.1f}%)")
-        dict_copy.update({max_key: -1})
+        max_val, max_key = max_in_dict(dict_copy)
+        if total == 0:
+            pourcentage = 0.0
+        else: 
+            pourcentage = (max_val * 100) / total
+            w_unit = "units"
+            if max_val == 1:
+                w_unit = "unit"
+            print(f"{max_key}: {max_val} {w_unit} ({pourcentage:.1f}%)")
+            dict_copy.update({max_key: -1})
 
 
 def ft_stats(d):
     max_val, max_key = max_in_dict(d)
     min_val, min_key = min_in_dict(d)
     w_unit_max = "units"
-    if max_val == 1:
+    if max_val == 1 or max_val == 0:
         w_unit_max = "unit"
     w_unit_min = "units"
-    if min_val == 1:
+    if min_val == 1 or min_val == 0:
         w_unit_min = "unit"
     print(f"Most abundant: {max_key} ({max_val} {w_unit_max})")
     print(f"Least abundant: {min_key} ({min_val} {w_unit_min})")
@@ -102,41 +116,42 @@ def ft_categories(d: dict) -> None:
 
 
 if __name__ == "__main__":
-    print("=== Inventory System Analysis ===")
     d = ft_parse_into_dict()
-    total = ft_total_items(d)
-    print(f"Total items in inventory: {total}")
-    print(f"Unique item types: {len(d)}")
-    print("\n=== Current Inventory ===")
-    ft_curr_inv(d)
-    print("\n=== Inventory Statistics ===")
-    ft_stats(d)
-    print("\n=== Item Categories ===")
-    ft_categories(d)
-    print("\n=== Management Suggestions ===")
-    min_val, min_key = min_in_dict(d)
-    restock_str = ""
-    is_first = True
-    for key in d:
-        val = d.get(key)
-        if val == min_val:
+    if d is not None:    
+        print("=== Inventory System Analysis ===")
+        total = ft_total_items(d)
+        print(f"Total items in inventory: {total}")
+        print(f"Unique item types: {len(d)}")
+        print("\n=== Current Inventory ===")
+        ft_curr_inv(d)
+        print("\n=== Inventory Statistics ===")
+        ft_stats(d)
+        print("\n=== Item Categories ===")
+        ft_categories(d)
+        print("\n=== Management Suggestions ===")
+        min_val, min_key = min_in_dict(d)
+        restock_str = ""
+        is_first = True
+        for key in d:
+            val = d.get(key)
+            if val == min_val:
+                if not is_first:        
+                    restock_str += ", "
+                restock_str += key
+                is_first = False
+        print(f"Restock needed: {restock_str}")
+        print("\n=== Dictionary Properties Demo ===")
+        keys_str = ""
+        values_str = ""
+        is_first = True
+        for key in d:
+            val = d.get(key)
             if not is_first:        
-                restock_str += ", "
-            restock_str += key
+                keys_str += ", "
+                values_str += ", "
+            keys_str += key
+            values_str += f"{val}"
             is_first = False
-    print(f"Restock needed: {restock_str}")
-    print("\n=== Dictionary Properties Demo ===")
-    keys_str = ""
-    values_str = ""
-    is_first = True
-    for key in d:
-        val = d.get(key)
-        if not is_first:        
-            keys_str += ", "
-            values_str += ", "
-        keys_str += key
-        values_str += f"{val}"
-        is_first = False
-    print(f"Dictionary keys: {keys_str}")
-    print(f"Dictionary values: {values_str}")
-    print(f"Sample lookup - 'sword' in inventory: {'sword' in d}")
+        print(f"Dictionary keys: {keys_str}")
+        print(f"Dictionary values: {values_str}")
+        print(f"Sample lookup - 'sword' in inventory: {'sword' in d}")

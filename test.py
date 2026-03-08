@@ -1,2 +1,3 @@
-t = (1, 3, 5)
-print(t)
+l =  ["alice", 'charlie', 'diana']
+l += "li 7wak"
+print(l)
