@@ -1,8 +1,9 @@
 from typing import Generator
 
-names = ["alice", "bob", "charlie", "diana", "eve"]
-actions = ["killed monster", "found treasure", "leveled up"]
+
 def event_stream() -> Generator:
+    names = ["alice", "bob", "charlie", "diana", "eve"]
+    actions = ["killed monster", "found treasure", "leveled up"]
     for i in range(1000):
         yield {
             "id": i + 1,
@@ -10,6 +11,7 @@ def event_stream() -> Generator:
             "level": (i % 30) + 1,
             "action": actions[i % len(actions)]
         }
+
 
 def stream_analytics() -> tuple:
     gen = event_stream()
@@ -32,11 +34,15 @@ def fibonacci() -> Generator:
         yield a
         a, b = b, a + b
 
-def is_prime(n):
+
+def is_prime(n: int) -> bool:
+    if n < 2:
+        return False
     for j in range(2, n):
         if n % j == 0:
             return False
     return True
+
 
 def prime() -> Generator:
     a = 2
@@ -55,7 +61,8 @@ if __name__ == "__main__":
     gen = event_stream()
     for i in range(3):
         event = next(gen)
-        print(f"Event {event['id']}: Player {event['player']} (level {event['level']}) {event['action']}")
+        print(f"Event {event['id']}: Player {event['player']} "
+              f"(level {event['level']}) {event['action']}")
     print("...")
     print("\n=== Stream Analytics ===")
     high_level, treasure, level_up = stream_analytics()
@@ -63,19 +70,19 @@ if __name__ == "__main__":
     print(f"High-level players (10+): {high_level}")
     print(f"Treasure events: {treasure}")
     print(f"Level-up events: {level_up}")
-    
+
     print("\nMemory usage: Constant (streaming)")
     print("Processing time: 0.045 seconds")
     print("\n=== Generator Demonstration ===")
     fib = fibonacci()
     primes = prime()
-    
+
     fib_res = ""
     for i in range(10):
         fib_res += f"{next(fib)}"
         if i < 9:
             fib_res += ", "
-    
+
     prime_res = ""
     for i in range(5):
         prime_res += f"{next(primes)}"

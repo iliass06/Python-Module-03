@@ -1,36 +1,49 @@
 import sys
 import math
 
-def ft_from_input():
-    origin = (0, 0, 0)
-    try:    
-        pos = tuple(int(x) for x in sys.argv[1].split(","))
-    except Exception as e:
-        print(f"Error: Invalide Arguments!!")
-        pos = (10, 20, 5)
-        print(f"Using default coordinats {pos}")
 
+def calculate_distance(pos1: tuple, pos2: tuple) -> float:
+    x1, y1, z1 = pos1
+    x2, y2, z2 = pos2
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
+
+
+def ft_from_input() -> None:
+    origin = (0, 0, 0)
+    if len(sys.argv) == 2:
+        try:
+            pos = tuple(int(x) for x in sys.argv[1].split(","))
+        except ValueError:
+            pos = (10, 20, 5)
+    elif len(sys.argv) > 2:
+        print("Error: too many arguments. Using default coordinates.")
+        pos = (10, 20, 5)
+    else:
+        pos = (10, 20, 5)
     print(f"\nPosition created: {pos}")
-    distance = math.sqrt((pos[0]-origin[0])**2 + (pos[1]-origin[1])**2 + (pos[2]-origin[2])**2)
+    distance = calculate_distance(origin, pos)
     print(f"Distance between {origin} and {pos}: {distance:.2f}")
 
-def ft_coordinate_system(position):
+
+def ft_coordinate_system(position: tuple) -> None:
     origin = (0, 0, 0)
     try:
         pos = tuple(int(x) for x in position.split(","))
         print(f"Parsed position: {pos}")
-        distance = math.sqrt((pos[0]-origin[0])**2 + (pos[1]-origin[1])**2 + (pos[2]-origin[2])**2)
+        distance = calculate_distance(origin, pos)
         print(f"Distance between {origin} and {pos}: {distance:.1f}")
     except ValueError as e:
         print(f"Error parsing coordinates: {e}")
-        print(f"Error details - Type: {type(e).__name__}, Args: (\"{e}\",)")
+        print(f"Error details - Type: ValueError, Args: (\"{e}\",)")
+
+
 if __name__ == "__main__":
     try:
         print("=== Game Coordinate System ===")
         ft_from_input()
-        print(f"\nParsing coordinates: \"3,4,0\"")
+        print("\nParsing coordinates: \"3,4,0\"")
         ft_coordinate_system("3,4,0")
-        print(f"\nParsing invalid coordinates: \"abc,def,ghi\"")
+        print("\nParsing invalid coordinates: \"abc,def,ghi\"")
         ft_coordinate_system("abc,def,ghi")
         pos = (3, 4, 0)
         print("\nUnpacking demonstration:")

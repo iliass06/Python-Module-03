@@ -5,7 +5,8 @@ if __name__ == "__main__":
     i = 1
     score_list = []
     if len(sys.argv) == 1:
-        print("No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ...")
+        print("No scores provided. Usage: python3 "
+              "ft_score_analytics.py <score1> <score2> ...")
     else:
         try:
             while i < len(sys.argv):
@@ -20,3 +21,5 @@ if __name__ == "__main__":
             print(f"Score range: {max(score_list) - min(score_list)}")
         except ValueError:
             print("please enter an valid inputs (only numeric values)")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
