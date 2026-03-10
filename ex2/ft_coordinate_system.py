@@ -14,6 +14,7 @@ def ft_from_input() -> None:
         try:
             pos = tuple(int(x) for x in sys.argv[1].split(","))
         except ValueError:
+            print("Error: invalid arguments. Using default coordinates.")
             pos = (10, 20, 5)
     elif len(sys.argv) > 2:
         print("Error: too many arguments. Using default coordinates.")

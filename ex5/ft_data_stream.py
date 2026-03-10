@@ -3,12 +3,14 @@ from typing import Generator
 
 def event_stream() -> Generator:
     names = ["alice", "bob", "charlie", "diana", "eve"]
+    levels = [5, 12, 8, 15, 2, 25, 14, 9, 30, 7]
     actions = ["killed monster", "found treasure", "leveled up"]
+
     for i in range(1000):
         yield {
             "id": i + 1,
             "player": names[i % len(names)],
-            "level": (i % 30) + 1,
+            "level": levels[i % len(levels)],
             "action": actions[i % len(actions)]
         }
 
