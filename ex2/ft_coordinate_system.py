@@ -26,7 +26,7 @@ def ft_from_input() -> None:
     print(f"Distance between {origin} and {pos}: {distance:.2f}")
 
 
-def ft_coordinate_system(position: tuple) -> None:
+def ft_coordinate_system(position: str) -> None:
     origin = (0, 0, 0)
     try:
         pos = tuple(int(x) for x in position.split(","))
@@ -34,8 +34,9 @@ def ft_coordinate_system(position: tuple) -> None:
         distance = calculate_distance(origin, pos)
         print(f"Distance between {origin} and {pos}: {distance:.1f}")
     except ValueError as e:
-        print(f"Error parsing coordinates: {e}")
-        print(f"Error details - Type: ValueError, Args: (\"{e}\",)")
+        msg, = e.args
+        print(f"Error parsing coordinates: {msg}")
+        print(f"Error details - Type: ValueError, Args: {e.args}")
 
 
 if __name__ == "__main__":

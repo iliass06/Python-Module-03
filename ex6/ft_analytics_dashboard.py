@@ -1,6 +1,6 @@
 if __name__ == "__main__":
     print("=== Game Analytics Dashboard ===")
-    players_data = [
+    players_data: list[dict] = [
             {
                 "name": "alice",
                 "score": 2300,
@@ -35,27 +35,27 @@ if __name__ == "__main__":
         ]
     print("\n=== List Comprehension Examples ===")
 
-    high_scores = [
+    high_scores: list = [
         player["name"] for player in players_data if player["score"] > 2000
     ]
     print(f"High scorers (>2000): {high_scores}")
 
-    scores_doubled = [player["score"] * 2 for player in players_data]
+    scores_doubled: list = [player["score"] * 2 for player in players_data]
     print(f"Scores doubled: {scores_doubled}")
 
-    active_players = [
+    active_players: list = [
         player["name"] for player in players_data if player["active"]
     ]
     print(f"Active players: {active_players}")
 
     print("\n=== Dict Comprehension Examples ===")
 
-    player_scores = {
+    player_scores: dict = {
         player["name"]: player["score"] for player in players_data
     }
     print(f"Player scores: {player_scores}")
 
-    score_categories = {
+    score_categories: dict = {
         "high": sum(1 for player in players_data if player["score"] >= 2300),
         "medium": sum(
             1 for player in players_data if 2000 <= player["score"] < 2300
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     }
     print(f"Score categories: {score_categories}")
 
-    ach_count = {
+    ach_count: dict = {
         player["name"]: len(
             player["achievements"]
         ) for player in players_data if player["active"]
@@ -73,15 +73,15 @@ if __name__ == "__main__":
 
     print("\n=== Set Comprehension Examples ===")
 
-    unique_players = {player["name"] for player in players_data}
+    unique_players: set = {player["name"] for player in players_data}
     print(f"Unique players: {unique_players}")
 
-    unique_ach = {
+    unique_ach: set = {
         ach for player in players_data for ach in player["achievements"]
     }
     print(f"Unique achievements: {unique_ach}")
 
-    active_reg = {
+    active_reg: set = {
         player["region"] for player in players_data if player["active"]
     }
     print(f"Active regions: {active_reg}")
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     sum_scores = sum(player["score"] for player in players_data)
     print(f"Average score: {(sum_scores / total):.1f}")
     max_score = max(player["score"] for player in players_data)
-    top_player = [
+    top_player: dict = [
         player for player in players_data if player["score"] == max_score
     ][0]
     print(f"Top performer: {top_player['name']} ({top_player['score']} "

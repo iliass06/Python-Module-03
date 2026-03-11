@@ -113,19 +113,28 @@ def ft_stats(d: dict) -> None:
 
 def ft_categories(d: dict) -> None:
     categorie = dict()
+    abundant = dict()
     moderate = dict()
     scarce = dict()
 
-    for key in d.keys():
-        val = d.get(key)
-        if val >= 5:
+    for key, val in d.items():
+        if val >= 10:
+            abundant.update({key: val})
+        elif val >= 5:
             moderate.update({key: val})
         else:
             scarce.update({key: val})
+    categorie.update({"Abundant": abundant})
     categorie.update({"Moderate": moderate})
     categorie.update({"Scarce": scarce})
-    print(f"Moderate: {categorie.get('Moderate')}")
-    print(f"Scarce: {categorie.get('Scarce')}")
+    if len(categorie.get("Abundant")) > 0:
+        print(f"Abundant: {categorie.get('Abundant')}")
+
+    if len(categorie.get("Moderate")) > 0:
+        print(f"Moderate: {categorie.get('Moderate')}")
+
+    if len(categorie.get("Scarce")) > 0:
+        print(f"Scarce: {categorie.get('Scarce')}")
 
 
 if __name__ == "__main__":

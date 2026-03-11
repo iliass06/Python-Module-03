@@ -61,7 +61,7 @@ if __name__ == "__main__":
     print("\nProcessing 1000 game events...")
     print()
     gen = event_stream()
-    for i in range(3):
+    for _ in range(3):
         event = next(gen)
         print(f"Event {event['id']}: Player {event['player']} "
               f"(level {event['level']}) {event['action']}")
